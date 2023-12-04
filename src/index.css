@@ -28,13 +28,9 @@ html{
     display: none;
 }
 
-@media (min-width: 768px) {
-    header nav li{
-        /* background-image: linear-gradient(to right, green, green 50%, #000 50%); */
+@media (min-width: 768px) {    
+    .nav-item{
         -webkit-text-fill-color: transparent;
-    }
-
-    header nav li{
         @apply
         relative
         bg-gradient-to-r from-primary via-primary via-50% to-black to-50%
@@ -46,23 +42,70 @@ html{
         cursor-pointer
     }
 
-    header nav li::before {
+    .header-item{
+        @apply
+        bg-gradient-to-r from-primary via-primary via-50% to-black to-50%
+    }
+
+    .drawer-item{
+        @apply
+        bg-gradient-to-r from-background via-background via-50% to-black to-50%
+    }
+
+
+    .nav-item:hover {
+        @apply
+        bg-[0]
+    }
+
+    .nav-item::before {
         content: '';
-        background: #E68D49;
-        display: block;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0px;
-        height: 3px;
-        transition: all 0.3s ease-in-out;
+        @apply
+        bg-primary
+        block
+        absolute
+        bottom-0
+        left-0
+        w-0
+        h-[3px]
+        transition-all duration-300 ease-in-out
     }
 
-    header nav li:hover {
-        background-position: 0;
+    .nav-item:hover::before {
+        @apply
+        w-full
     }
 
-    header nav li:hover::before {
-        width: 100%;
+    .nav-flag{
+        @apply
+        relative
+        bg-background
+        rounded-[5px]
+        cursor-pointer
+    }
+
+    .nav-flag::before{
+        content: '';
+        @apply
+        bg-primary
+        block
+        absolute
+        top-1/2
+        left-1/2
+        translate-x-[-50%]
+        translate-y-[-50%]
+        z-[-1]
+        w-0
+        h-0
+        opacity-0
+        rounded-[5px]
+        transition-all duration-300 ease-in-out
+    }
+
+    .nav-flag:hover::before {
+        @apply
+        opacity-100
+        w-[35px]
+        h-[35px]
     }
 }

@@ -11,7 +11,7 @@ export default {
       },
       screens: {
         tall: { raw: '(min-height: 745px)' },
-        // => @media (min-height: 800px) { ... }
+        xxl: { raw: '(min-width: 1440px)' },
       },
       animation: {
         socialEnterRight: 'socialEnterRight 600ms linear',
