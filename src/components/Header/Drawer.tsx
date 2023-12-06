@@ -18,6 +18,7 @@ export default function Drawer({
   $drawerItems,
 }: DrawerTypes) {
   const { lang, toggleLang, translated } = useLanguage();
+  const sectionsNames = translated.sections;
 
   const navLinkStyle = `nav-item drawer-item w-fit relative transition-all duration-300 ease-in-out before:content-[''] before:bg-background before:absolute before:block before:h-1 before:-bottom-1 before:rounded`;
 
@@ -44,7 +45,7 @@ export default function Drawer({
                 document.dispatchEvent(new Event(section));
               }}
             >
-              <a className="capitalize" href={`#${section}`}>
+              <a className="capitalize" href={`#${sectionsNames[index]}`}>
                 {translated.headerItems[index]}
               </a>
             </li>

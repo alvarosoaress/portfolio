@@ -2,6 +2,7 @@ import React from 'react';
 import { createContext, useEffect, useState } from 'react';
 
 type TextTypes = {
+  sections: Array<string>;
   typewriterItems: Array<string>;
   headerItems: Array<string>;
   heroTitle: string;
@@ -23,6 +24,7 @@ const defaultLang = 'US';
 
 const textMap = new Map<string, TextTypes>()
   .set('BR', {
+    sections: ['home', 'about', 'projects', 'contact'],
     typewriterItems: [
       'Olá, Mundo',
       'Bem-vind@',
@@ -85,6 +87,7 @@ const textMap = new Map<string, TextTypes>()
       eu possa aprender e me desenvolver ainda mais.`,
   })
   .set('US', {
+    sections: ['home', 'about', 'projects', 'contact'],
     typewriterItems: [
       'Hello, World',
       'Welcome',

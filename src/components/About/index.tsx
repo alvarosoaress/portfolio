@@ -1,37 +1,22 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { useIsVisible } from '../../utils';
+import React from 'react';
 import catTraining from '../../assets/catTraining.gif';
 import { useLanguage } from '../Text/LanguageProvider';
+import Section from '../Section';
 
-export default function About({ refName }: { refName: string }) {
+export default function About() {
   const { translated } = useLanguage();
 
-  const $ref = useRef<HTMLDivElement | null>(null);
-
-  const isVisible = useIsVisible($ref);
-
-  const sectionEvent = useMemo(() => new Event(refName), [refName]);
-
-  useEffect(() => {
-    if (isVisible) {
-      document.dispatchEvent(sectionEvent);
-    }
-  }, [isVisible, sectionEvent]);
-
   return (
-    <section
-      ref={$ref}
-      id={refName}
-      className="flex flex-col items-center min-h-screen gap-5 pt-10 bg-background sm:pt-10 md:justify-center md:snap-start"
-    >
+    <Section refName={'about'} className="md:my-20 xxl:!my-0">
       <div className="flex flex-col items-center md:grid md:grid-cols-[1fr_1fr] md:w-full">
         <img
           className="w-[85px] h-[80px] z-10 animate-roundedEnter justify-self-center md:w-[200px] md:h-[200px]"
           src={catTraining}
-          alt="Foto de perfil"
+          loading="lazy"
+          alt="Foto de gato treinando"
         />
         <div className="flex flex-col text-center gap-6 md:w-[50vw] md:gap-10 md:text-left">
-          <h1 className="text-3xl break-all text-primary tall:text-4xl md:break-normal md:!text-6xl">
+          <h1 className="text-3xl break-all text-primary tall:text-4xl md:break-normal md:text-5xl xxl:!text-6xl">
             {translated.aboutTitle}
           </h1>
 
@@ -46,6 +31,6 @@ export default function About({ refName }: { refName: string }) {
           ></p>
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

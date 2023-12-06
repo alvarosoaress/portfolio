@@ -14,6 +14,7 @@ import { FaBars } from 'react-icons/fa';
 export default function Header() {
   const { translated, lang, toggleLang } = useLanguage();
   const navItems = translated.headerItems;
+  const sections = translated.sections;
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -62,6 +63,7 @@ export default function Header() {
   const handleLocation = useCallback(
     (section: string) => () => {
       handleVisible();
+      console.log(section);
       $drawerItems[section].current?.classList.add('text-background');
       $drawerItems[section].current?.classList.add('before:w-full');
       $drawerItems[section].current?.classList.add('!bg-[0]');
@@ -104,9 +106,9 @@ export default function Header() {
         className="hidden list-none flex-row justify-end !snap-none md:flex"
       >
         <ul className="flex items-center gap-7">
-          {navItems.map((item) => (
+          {navItems.map((item, i) => (
             <li className="nav-item header-item" key={item}>
-              {item}
+              <a href={`#${sections[i]}`}>{item}</a>
             </li>
           ))}
 

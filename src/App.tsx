@@ -10,9 +10,9 @@ function App() {
     <LanguageProvider>
       <main className="relative px-6 bg-background text-text lg:px-48">
         <Header />
-        <Hero refName={'home'} />
-        <About refName={'about'} />
-        <Project refName={'projects'} />
+        <Hero />
+        <About />
+        <Project />
         <section className="flex flex-col items-center justify-center min-h-screen gap-5 pt-5 bg-background snap-start md:pt-10"></section>
         <section className="flex flex-col items-center justify-center min-h-screen gap-5 pt-5 bg-background snap-start md:pt-10"></section>
       </main>
