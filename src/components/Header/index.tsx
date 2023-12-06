@@ -63,7 +63,6 @@ export default function Header() {
   const handleLocation = useCallback(
     (section: string) => () => {
       handleVisible();
-      console.log(section);
       $drawerItems[section].current?.classList.add('text-background');
       $drawerItems[section].current?.classList.add('before:w-full');
       $drawerItems[section].current?.classList.add('!bg-[0]');

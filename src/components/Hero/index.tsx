@@ -14,7 +14,7 @@ export default function Hero() {
   const { translated } = useLanguage();
 
   return (
-    <Section refName={'home'}>
+    <Section sectionName={'home'}>
       <div className="flex flex-col items-center gap-10 md:grid md:grid-cols-[1fr_auto] md:w-full">
         <div className="flex flex-col items-center text-center md:block md:text-left">
           <h1 className="text-3xl text-center md:text-left tall:text-4xl xxl:!text-7xl md:mb-1">

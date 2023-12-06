@@ -207,7 +207,7 @@ export default function Project() {
   }, []);
 
   return (
-    <Section refName={'projects'}>
+    <Section sectionName={'projects'}>
       <h1 className="mx-5 my-20 text-6xl text-center break-all text-primary md:text-left md:text-5xl xxl:text-6xl">
         Colocando em prática !
       </h1>

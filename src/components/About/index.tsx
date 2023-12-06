@@ -7,7 +7,7 @@ export default function About() {
   const { translated } = useLanguage();
 
   return (
-    <Section refName={'about'} className="md:my-20 xxl:!my-0">
+    <Section sectionName={'about'} className="md:my-20 xxl:!my-0">
       <div className="flex flex-col items-center md:grid md:grid-cols-[1fr_1fr] md:w-full">
         <img
           className="w-[85px] h-[80px] z-10 animate-roundedEnter justify-self-center md:w-[200px] md:h-[200px]"
