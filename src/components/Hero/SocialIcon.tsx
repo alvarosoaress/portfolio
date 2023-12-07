@@ -31,6 +31,7 @@ export default function SocialIcon({
 
       {openNewTab ? (
         <a
+          aria-label="Social link"
           className="text-4xl cursor-pointer"
           href={link}
           target="_blank"
@@ -40,6 +41,8 @@ export default function SocialIcon({
         </a>
       ) : (
         <button
+          title="Social button"
+          aria-label="Social button"
           className="text-4xl cursor-pointer"
           onClick={() => {
             $clipboardPopup.current?.classList.add('animate-popup');

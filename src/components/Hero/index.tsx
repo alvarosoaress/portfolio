@@ -35,7 +35,7 @@ export default function Hero() {
           className="w-[170px] h-[300px] z-10 animate-roundedEnter sm:h-[425px] tall:w-[250px] tall:h-[425px]
         md:!w-[250px] md:!h-[385px] xxl:!w-[300px] xxl:!h-[525px]"
           src={profilePhoto}
-          alt="Foto de perfil"
+          alt="Profile picture"
         />
       </div>
       <h1
@@ -58,7 +58,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <a href="#about">
+      <a aria-label="Bouncing arrow link to about me" href="#about">
         <FaChevronDown className="animate-bounce" />
       </a>
     </Section>

@@ -87,6 +87,8 @@ export default function Header() {
       }`}
     >
       <button
+        title="Open drawer button"
+        aria-label="Open drawer"
         ref={$menuIcon}
         className="fixed top-3 right-8 text-2xl z-10 text-primary p-0.5 px-1 rounded-lg outline-none md:opacity-0 md:scale-0 md:right-[-50px] md:top-6 hover:drop-shadow-lg hover:scale-110 cursor-pointer"
         onClick={() => setDrawerOpen(!drawerOpen)}
@@ -108,12 +110,19 @@ export default function Header() {
         <ul className="flex items-center gap-7">
           {navItems.map((item, i) => (
             <li className="nav-item header-item" key={item}>
-              <a href={`#${sections[i]}`}>{item}</a>
+              <a aria-label="Section title" href={`#${sections[i]}`}>
+                {item}
+              </a>
             </li>
           ))}
 
           <li className="nav-flag" onClick={() => toggleLang()}>
-            <img src={lang === 'BR' ? BrFlag : UsFlag} width={25} height={25} />
+            <img
+              alt="Country Flag"
+              src={lang === 'BR' ? BrFlag : UsFlag}
+              width={25}
+              height={25}
+            />
           </li>
         </ul>
       </nav>

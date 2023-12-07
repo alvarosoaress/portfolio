@@ -26,6 +26,7 @@ export default function ProjectBlock({
         <img
           className={` ${inverted ? `md:order-1` : ``}`}
           src={projectInfo.image}
+          alt="Project Image"
           loading="lazy"
         />
       ) : (

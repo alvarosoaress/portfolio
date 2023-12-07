@@ -45,17 +45,27 @@ export default function Drawer({
                 document.dispatchEvent(new Event(section));
               }}
             >
-              <a className="capitalize" href={`#${sectionsNames[index]}`}>
+              <a
+                aria-label="Section title"
+                className="capitalize"
+                href={`#${sectionsNames[index]}`}
+              >
                 {translated.headerItems[index]}
               </a>
             </li>
           ))}
 
           <li className="nav-item header-item" onClick={() => toggleLang()}>
-            <img src={lang === 'BR' ? BrFlag : UsFlag} width={35} height={35} />
+            <img
+              alt="Country Flag"
+              src={lang === 'BR' ? BrFlag : UsFlag}
+              width={35}
+              height={35}
+            />
           </li>
 
           <a
+            aria-label="Open drawer"
             className="cursor-pointer text-background"
             onClick={() => setDrawerOpen(false)}
           >

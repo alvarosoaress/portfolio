@@ -25,6 +25,7 @@ export default function SocialButton({
     <div className="relative hover:scale-110">
       {openNewTab ? (
         <a
+          aria-label="Social link"
           className="flex w-[110px] md:w-[120px] flex-col items-center p-6 rounded-lg bg-primary text-background cursor-pointer md:gap-2"
           href={link}
           target="_blank"
@@ -36,6 +37,8 @@ export default function SocialButton({
       ) : (
         <>
           <button
+            title="Social button"
+            aria-label="Social button"
             className="flex w-[110px] md:w-[120px] flex-col items-center p-6 rounded-lg bg-primary text-background cursor-pointer md:gap-2"
             onClick={() => {
               $clipboardPopup.current?.classList.add('animate-popup');

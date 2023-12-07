@@ -33,7 +33,7 @@ export default function Contact() {
             text="Email"
           />
         </div>
-        <img src="https://private-user-images.githubusercontent.com/13721147/282960042-38e5f654-1322-44b9-85f9-4f6a82033d22.gif?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE3MDE5NzQyMjMsIm5iZiI6MTcwMTk3MzkyMywicGF0aCI6Ii8xMzcyMTE0Ny8yODI5NjAwNDItMzhlNWY2NTQtMTMyMi00NGI5LTg1ZjktNGY2YTgyMDMzZDIyLmdpZj9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFJV05KWUFYNENTVkVINTNBJTJGMjAyMzEyMDclMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjMxMjA3VDE4MzIwM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTdmNmYzYjViNDRhOTliMzljMzRkYThkN2MyODc4YTAxN2M1NmY5NTgzOTU1Zjk5NWQxZGFhY2Q2NjVjZTY2YjMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.JCGkj-Vud-D98iWWhEqYLbxJCaDaNAQoVSvkdQhoAiw" />
+        <img alt="Cat campfire" src="https://i.imgur.com/itWJkwv.gif" />
       </div>
     </Section>
   );

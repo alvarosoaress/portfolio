@@ -13,7 +13,7 @@ export default function About() {
           className="w-[85px] h-[80px] z-10 animate-roundedEnter justify-self-center md:w-[200px] md:h-[200px]"
           src={catTraining}
           loading="lazy"
-          alt="Foto de gato treinando"
+          alt="Cat training"
         />
         <div className="flex flex-col text-center gap-6 md:w-[50vw] md:gap-10 md:text-left">
           <h1 className="text-3xl text-primary tall:text-4xl md:text-5xl xxl:!text-6xl">
