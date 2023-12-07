@@ -11,7 +11,7 @@ export default function Tech({ name }: { name: string }) {
         className="object-contain"
       />
 
-      <span className="font-sans font-semibold text-background text-md ">
+      <span className="font-sans text-sm font-semibold text-background md:text-md">
         {name}
       </span>
     </div>

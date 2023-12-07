@@ -20,7 +20,7 @@ export default function ProjectBlock({
         projectInfo.image
           ? `md:grid-cols-[1fr_1fr]`
           : `md:grid-cols-[1fr_0.5fr]`
-      }  xxl:w-[80%] md:gap-32 border-[#00050] border-b-[1px] my-12 pb-12`}
+      }  xxl:w-[80%] md:gap-32 border-[#00050] border-b-[1px] my-6 pb-6 md:my-12 md:pb-12`}
     >
       {projectInfo.image ? (
         <img
@@ -40,10 +40,10 @@ export default function ProjectBlock({
         </div>
       )}
       <div className="flex flex-col items-center self-start gap-10 md:items-start">
-        <h2 className="text-5xl text-center md:text-left text-primary xxl:text-6xl">
+        <h2 className="text-4xl text-center tall:text-5xl md:text-left text-primary xxl:text-6xl">
           {projectInfo.name}
         </h2>
-        <h2 className="text-2xl text-center md:text-left text-text">
+        <h2 className="text-xl text-center md:text-2xl md:text-left text-text">
           {projectInfo.description}
         </h2>
 

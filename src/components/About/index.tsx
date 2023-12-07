@@ -16,7 +16,7 @@ export default function About() {
           alt="Foto de gato treinando"
         />
         <div className="flex flex-col text-center gap-6 md:w-[50vw] md:gap-10 md:text-left">
-          <h1 className="text-3xl break-all text-primary tall:text-4xl md:break-normal md:text-5xl xxl:!text-6xl">
+          <h1 className="text-3xl text-primary tall:text-4xl md:text-5xl xxl:!text-6xl">
             {translated.aboutTitle}
           </h1>
 

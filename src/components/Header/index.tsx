@@ -76,6 +76,7 @@ export default function Header() {
     document.addEventListener('home', handleLocation('home'));
     document.addEventListener('about', handleLocation('about'));
     document.addEventListener('projects', handleLocation('projects'));
+    document.addEventListener('contact', handleLocation('contact'));
   }, [handleScroll, handleLocation]);
 
   return (

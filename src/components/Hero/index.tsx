@@ -9,6 +9,7 @@ import {
   FaLinkedin,
 } from 'react-icons/fa';
 import Section from '../Section';
+import SocialIcon from './SocialIcon';
 
 export default function Hero() {
   const { translated } = useLanguage();
@@ -31,7 +32,8 @@ export default function Hero() {
           </h1>
         </div>
         <img
-          className="w-[170px] h-[300px] z-10 animate-roundedEnter sm:h-[425px] tall:w-[250px] tall:h-[425px] md:!w-[250px] md:!h-[385px] xxl:!w-[300px] xxl:!h-[525px]"
+          className="w-[170px] h-[300px] z-10 animate-roundedEnter sm:h-[425px] tall:w-[250px] tall:h-[425px]
+        md:!w-[250px] md:!h-[385px] xxl:!w-[300px] xxl:!h-[525px]"
           src={profilePhoto}
           alt="Foto de perfil"
         />
@@ -42,22 +44,23 @@ export default function Hero() {
       ></h1>
       <div className="animate-scaleEnter md:animate-socialEnterRight lg:absolute md:right-28 md:top-44 xxl:right-28 xxl:top-72">
         <div className="flex items-center justify-center w-full gap-5 lg:flex-col">
-          <button className="text-4xl hover:scale-125">
-            <FaGithub size={'40px'} />
-          </button>
-          <button className="text-4xl hover:scale-125">
-            <FaLinkedin size={'40px'} />
-          </button>
-          <button className="text-4xl hover:scale-125">
-            <FaEnvelope size={'40px'} />
-          </button>
+          <SocialIcon
+            Icon={FaLinkedin}
+            link="https://www.linkedin.com/in/alvaroegsoares/"
+            openNewTab
+          />
+          <SocialIcon
+            Icon={FaGithub}
+            link="https://github.com/alvarosoaress"
+            openNewTab
+          />
+          <SocialIcon Icon={FaEnvelope} link="alvaroegsoares@gmail.com" />
         </div>
       </div>
 
       <a href="#about">
         <FaChevronDown className="animate-bounce" />
       </a>
-      {/* <FontAwesomeIcon icon={faChevronDown} bounce className="cursor-pointer" /> */}
     </Section>
   );
 }

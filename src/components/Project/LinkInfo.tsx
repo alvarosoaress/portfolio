@@ -19,7 +19,7 @@ export default function LinkInfo({ title, Icon, href }: LinkInfoTypes) {
         <Icon className="mr-1 text-2xl transition-all duration-75 ease-in-out text-primary group-hover:fill-white" />
       </div>
 
-      <span className="p-2 text-2xl text-text group-hover:text-white">
+      <span className="p-2 text-xl md:text-2xl text-text group-hover:text-white">
         {title}
       </span>
       <IconOpenNewTab

@@ -10,6 +10,9 @@ type TextTypes = {
   aboutTitle: string;
   aboutMobileText: string;
   aboutDesktopText: string;
+  contactTitle: string;
+  projectTitle: string;
+  clipboard: string;
 };
 
 type LanguageContextTypes = {
@@ -36,7 +39,7 @@ const textMap = new Map<string, TextTypes>()
     headerItems: ['Home', 'Sobre', 'Projetos', 'Contato'],
     heroTitle: 'Prazer, ',
     heroDev: `Desenvolvedor</br>Web Full-Stack`,
-    aboutTitle: 'Sempre aprendendo !',
+    aboutTitle: 'Sempre aprendendo!',
     aboutMobileText: ` Eu sou um estudante apaixonado por programação web full stack em
       busca de seu primeiro emprego. <br /> 
       Tenho conhecimentos sólidos em
@@ -85,6 +88,9 @@ const textMap = new Map<string, TextTypes>()
       comunicar efetivamente. Estou animado com a oportunidade de aplicar
       minhas habilidades e conhecimentos em um ambiente de trabalho aonde
       eu possa aprender e me desenvolver ainda mais.`,
+    contactTitle: 'Vamos trocar uma ideia !',
+    projectTitle: 'Colocando em prática !',
+    clipboard: 'Copiado !',
   })
   .set('US', {
     sections: ['home', 'about', 'projects', 'contact'],
@@ -136,6 +142,9 @@ const textMap = new Map<string, TextTypes>()
       <span class="text-primary">PHP</span>.<br/><br/> I love expanding my knowledge across various programming areas! 
       Of course, my first language in the programming world was 
       <span class="text-primary">English</span>; I am self-taught in this language, enabling me to work and communicate effectively. I am excited about the opportunity to apply my skills and knowledge in a work environment where I can continue learning and further developing myself.`,
+    contactTitle: `Let's talk!`,
+    projectTitle: `From Idea to Reality`,
+    clipboard: 'Copied !',
   });
 
 export function LanguageProvider({

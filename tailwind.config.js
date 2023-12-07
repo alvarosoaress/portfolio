@@ -20,6 +20,7 @@ export default {
         fadeIn: 'fadeIn 500ms ease-in-out',
         scaleEnter: 'scaleEnter 600ms linear',
         roundedEnter: 'roundedEnter 20s infinite alternate',
+        popup: 'popup 2s 2 alternate ease-in-out',
       },
       keyframes: {
         socialEnterRight: {
@@ -52,6 +53,10 @@ export default {
           to: {
             borderRadius: '81% 19% 79% 21% / 26% 79% 21% 74%',
           },
+        },
+        popup: {
+          from: { visibility: 'hidden', opacity: '0%' },
+          to: { visibility: 'visible', opacity: '100%' },
         },
       },
     },

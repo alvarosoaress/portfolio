@@ -4,6 +4,7 @@ import Header from './components/Header';
 import About from './components/About';
 import { LanguageProvider } from './components/Text/LanguageProvider';
 import Project from './components/Project';
+import Contact from './components/Contact';
 
 function App() {
   return (
@@ -13,8 +14,7 @@ function App() {
         <Hero />
         <About />
         <Project />
-        <section className="flex flex-col items-center justify-center min-h-screen gap-5 pt-5 bg-background snap-start md:pt-10"></section>
-        <section className="flex flex-col items-center justify-center min-h-screen gap-5 pt-5 bg-background snap-start md:pt-10"></section>
+        <Contact />
       </main>
     </LanguageProvider>
   );

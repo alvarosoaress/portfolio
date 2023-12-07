@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProjectBlock from './ProjectBlock';
 import Section from '../Section';
+import { useLanguage } from '../Text/LanguageProvider';
 
 type GithubEventType = {
   id: string;
@@ -65,6 +66,8 @@ export type ReadmeType = {
 };
 
 export default function Project() {
+  const { translated } = useLanguage();
+
   const [projects, setProjects] = useState<ReadmeType[]>([]);
 
   const githubApi = axios.create({
@@ -208,8 +211,8 @@ export default function Project() {
 
   return (
     <Section sectionName={'projects'}>
-      <h1 className="mx-5 my-20 text-6xl text-center break-all text-primary md:text-left md:text-5xl xxl:text-6xl">
-        Colocando em prática !
+      <h1 className="mx-5 my-10 text-5xl text-center md:my-20 text-primary md:text-left md:text-5xl xxl:text-6xl">
+        {translated.projectTitle}
       </h1>
 
       {projects.map((project, index) => (
