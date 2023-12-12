@@ -24,7 +24,9 @@ export default function ProjectBlock({
     >
       {projectInfo.image ? (
         <img
-          className={` ${inverted ? `md:order-1` : ``}`}
+          className={` ${
+            inverted ? `md:order-1` : ``
+          } w-[85%] h-[80%] object-contain`}
           src={projectInfo.image}
           alt="Project Image"
           loading="lazy"

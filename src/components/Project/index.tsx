@@ -56,7 +56,6 @@ export type ReadmeType = {
   repoLink: string;
   name: string;
   lines?: string[];
-  finalLine?: string;
   available?: string | null;
   description: string;
   image?: string;
@@ -107,7 +106,6 @@ export default function Project() {
         repoLink: '',
         name: '',
         lines: [],
-        finalLine: '',
         available: null,
         description: '',
         image: '',
@@ -120,40 +118,24 @@ export default function Project() {
         const { data: readmeData } = await axios.get<string | null>(
           `https://raw.githubusercontent.com/alvarosoaress/${repo.name}/${repo.default_branch}/README.md`,
         );
+        readme.lines = readmeData?.split('\n').slice(-9, -2);
 
-        readme.lines = readmeData?.split('\n').slice(-8);
+        readme.available = readme.lines?.[readme.lines?.length - 1];
 
-        readme.finalLine = readme.lines?.[readme.lines?.length - 2];
-        readme.available = readme.finalLine?.slice(
-          4,
-          readme.finalLine.length - 1,
-        );
+        console.log(readme.lines);
 
         if (readme.lines && readme.available === 'available') {
-          readme.description = readme.lines?.[readme.lines?.length - 3];
-          readme.description = readme.description.slice(
-            4,
-            readme.description.length - 1,
-          );
+          readme.description = readme.lines?.[readme.lines?.length - 2];
 
-          readme.image = readme.lines?.[readme.lines?.length - 4];
-          readme.image = readme.image.slice(4, readme.image.length - 1);
+          readme.image = readme.lines?.[readme.lines?.length - 3];
 
-          const techs = readme.lines?.[readme.lines?.length - 5];
+          readme.techs = readme.lines?.[readme.lines?.length - 4].split(';');
 
-          readme.techs = techs.slice(4, techs.length - 1).split(';');
+          readme.site = readme.lines?.[readme.lines?.length - 5];
 
-          readme.site = readme.lines?.[readme.lines?.length - 6];
-          readme.site = readme.site.slice(4, readme.site.length - 1);
+          readme.priority = readme.lines?.[readme.lines?.length - 6];
 
-          readme.priority = readme.lines?.[readme.lines?.length - 7];
-          readme.priority = readme.priority.slice(
-            4,
-            readme.priority.length - 1,
-          );
-
-          readme.name = readme.lines?.[readme.lines?.length - 8];
-          readme.name = readme.name.slice(4, readme.name.length - 1);
+          readme.name = readme.lines?.[readme.lines?.length - 7];
 
           readme.repoLink = `https://github.com/alvarosoaress/${repo.name
             .replace(' ', '-')
