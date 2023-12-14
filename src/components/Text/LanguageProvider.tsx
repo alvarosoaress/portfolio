@@ -13,6 +13,9 @@ type TextTypes = {
   contactTitle: string;
   projectTitle: string;
   clipboard: string;
+  codeButton: string;
+  moreProjects: string;
+  lessProjects: string;
 };
 
 type LanguageContextTypes = {
@@ -91,6 +94,9 @@ const textMap = new Map<string, TextTypes>()
     contactTitle: 'Vamos trocar uma ideia !',
     projectTitle: 'Colocando em prática !',
     clipboard: 'Copiado !',
+    codeButton: 'Código',
+    moreProjects: 'Ver todos projetos',
+    lessProjects: 'Ver menos',
   })
   .set('US', {
     sections: ['home', 'about', 'projects', 'contact'],
@@ -145,6 +151,9 @@ const textMap = new Map<string, TextTypes>()
     contactTitle: `Let's talk!`,
     projectTitle: `From Idea to Reality`,
     clipboard: 'Copied !',
+    codeButton: 'Code',
+    moreProjects: 'See all projects',
+    lessProjects: 'See less',
   });
 
 export function LanguageProvider({

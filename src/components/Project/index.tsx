@@ -68,6 +68,7 @@ export default function Project() {
   const { translated } = useLanguage();
 
   const [projects, setProjects] = useState<ReadmeType[]>([]);
+  const [manyProjects, setManyProjects] = useState<number>(0);
 
   const githubApi = axios.create({
     baseURL: 'https://api.github.com/users/alvarosoaress',
@@ -176,6 +177,9 @@ export default function Project() {
 
           localStorage.setItem('projects', JSON.stringify(filteredReadmes));
           setProjects(filteredReadmes);
+          filteredReadmes.length > 3
+            ? setManyProjects(3)
+            : setManyProjects(filteredReadmes.length);
         } catch (error) {
           if (error instanceof Error) {
             console.error('Error fetching data:', error.message);
@@ -183,7 +187,13 @@ export default function Project() {
           }
         }
       } else {
-        setProjects(JSON.parse(localStorage.getItem('projects') || '[]'));
+        const localProjects = JSON.parse(
+          localStorage.getItem('projects') || '[]',
+        );
+        setProjects(localProjects);
+        localProjects.length > 3
+          ? setManyProjects(3)
+          : setManyProjects(localProjects.length);
       }
     }
 
@@ -192,18 +202,35 @@ export default function Project() {
   }, []);
 
   return (
-    <Section sectionName={'projects'}>
+    <Section sectionName={'projects'} className="!snap-none !snap-align-none">
       <h1 className="mx-5 my-10 text-5xl text-center md:my-20 text-primary md:text-left md:text-5xl xxl:text-6xl">
         {translated.projectTitle}
       </h1>
 
-      {projects.map((project, index) => (
+      {projects.slice(0, manyProjects).map((project, index) => (
         <ProjectBlock
           key={project.name}
           projectInfo={project}
           inverted={!!(index % 2)}
         />
       ))}
+
+      {manyProjects ? (
+        <div>
+          <button
+            className={`p-4 text-2xl border-2  md:p-5 md:text-3xl rounded-xl text-primary border-primary hover:bg-primary hover:text-background hover:scale-10`}
+            onClick={() =>
+              manyProjects === 3
+                ? setManyProjects(projects.length)
+                : setManyProjects(3)
+            }
+          >
+            {manyProjects === 3
+              ? translated.moreProjects
+              : translated.lessProjects}
+          </button>
+        </div>
+      ) : null}
     </Section>
   );
 }

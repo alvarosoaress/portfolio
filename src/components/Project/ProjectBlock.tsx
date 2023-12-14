@@ -4,6 +4,7 @@ import Tech from './Tech';
 import { ReadmeType } from '.';
 import { FaGlobe } from 'react-icons/fa';
 import { FaGithub } from 'react-icons/fa';
+import { useLanguage } from '../Text/LanguageProvider';
 
 type ProjectBlockTypes = {
   projectInfo: ReadmeType;
@@ -14,22 +15,25 @@ export default function ProjectBlock({
   projectInfo,
   inverted,
 }: ProjectBlockTypes) {
+  const { translated } = useLanguage();
+
   return (
     <div
       className={`flex flex-col items-center gap-6 md:grid ${
         projectInfo.image
-          ? `md:grid-cols-[1fr_1fr]`
+          ? inverted
+            ? `md:grid-cols-[1fr_0.7fr]`
+            : `md:grid-cols-[0.7fr_1fr]`
           : `md:grid-cols-[1fr_0.5fr]`
-      }  xxl:w-[80%] md:gap-32 border-[#00050] border-b-[1px] my-6 pb-6 md:my-12 md:pb-12`}
+      } xxl:w-[80%] md:gap-32 border-[#00050] border-b-[1px] my-6 pb-6 md:my-12 md:pb-12 !snap-none !snap-align-none animate-fadeIn`}
     >
       {projectInfo.image ? (
         <img
-          className={` ${
+          className={`${
             inverted ? `md:order-1` : ``
-          } w-[85%] h-[80%] object-contain`}
+          } max-h-[500px] object-contain md:max-h-[90%] xxl:max-w-[600px]`}
           src={projectInfo.image}
           alt="Project Image"
-          loading="lazy"
         />
       ) : (
         <div
@@ -50,24 +54,24 @@ export default function ProjectBlock({
           {projectInfo.description}
         </h2>
 
+        {projectInfo.image ? (
+          <div className="flex flex-wrap justify-center gap-4 xxl:max-w-[100%] md:justify-start">
+            {projectInfo.techs.map((tech) => (
+              <Tech key={tech} name={tech} />
+            ))}
+          </div>
+        ) : null}
+
         <div className="flex gap-12">
           <LinkInfo
             Icon={FaGithub}
-            title="Código"
+            title={translated.codeButton}
             href={projectInfo.repoLink}
           />
           {projectInfo.site ? (
             <LinkInfo Icon={FaGlobe} title="Site" href={projectInfo.site} />
           ) : null}
         </div>
-
-        {projectInfo.image ? (
-          <div className="flex flex-wrap justify-center gap-4 xxl:max-w-[80%] md:justify-start">
-            {projectInfo.techs.map((tech) => (
-              <Tech key={tech} name={tech} />
-            ))}
-          </div>
-        ) : null}
       </div>
     </div>
   );
