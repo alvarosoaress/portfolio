@@ -102,6 +102,44 @@ export default function Project() {
       }
     }
 
+    function organizeReadme(
+      readme: ReadmeType,
+      readmeData: string | null,
+      repoName: string,
+    ) {
+      readme.lines = readmeData?.split('\n').slice(-9, -2);
+
+      readme.available = readme.lines?.[readme.lines?.length - 1];
+
+      if (readme.lines && readme.available === 'available') {
+        readme.description = readme.lines?.[readme.lines?.length - 2];
+
+        readme.image = readme.lines?.[readme.lines?.length - 3];
+
+        readme.techs = readme.lines?.[readme.lines?.length - 4].split(';');
+
+        readme.site = readme.lines?.[readme.lines?.length - 5];
+
+        readme.priority = readme.lines?.[readme.lines?.length - 6];
+
+        readme.name = readme.lines?.[readme.lines?.length - 7];
+
+        readme.repoLink = `https://github.com/alvarosoaress/${repoName
+          .replace(' ', '-')
+          .toLocaleLowerCase()}/`;
+
+        if (readme.available !== null) {
+          setProjects((prev) =>
+            [...prev, readme].sort(
+              (a, b) => Number(a.priority) - Number(b.priority),
+            ),
+          );
+
+          return readme;
+        }
+      }
+    }
+
     async function getRepoReadme(repo: RepositoryType) {
       const readme: ReadmeType = {
         repoLink: '',
@@ -115,45 +153,38 @@ export default function Project() {
         priority: '',
       };
 
+      const readmeLinkBR = `https://raw.githubusercontent.com/alvarosoaress/${repo.name}/${repo.default_branch}/README.md`;
+      const readmeLinkUS = `https://raw.githubusercontent.com/alvarosoaress/${repo.name}/${repo.default_branch}/README-EN.md`;
+
       try {
         const { data: readmeData } = await axios.get<string | null>(
-          `https://raw.githubusercontent.com/alvarosoaress/${repo.name}/${repo.default_branch}/README.md`,
+          readmeLinkBR,
         );
-        readme.lines = readmeData?.split('\n').slice(-9, -2);
 
-        readme.available = readme.lines?.[readme.lines?.length - 1];
-
-        console.log(readme.lines);
-
-        if (readme.lines && readme.available === 'available') {
-          readme.description = readme.lines?.[readme.lines?.length - 2];
-
-          readme.image = readme.lines?.[readme.lines?.length - 3];
-
-          readme.techs = readme.lines?.[readme.lines?.length - 4].split(';');
-
-          readme.site = readme.lines?.[readme.lines?.length - 5];
-
-          readme.priority = readme.lines?.[readme.lines?.length - 6];
-
-          readme.name = readme.lines?.[readme.lines?.length - 7];
-
-          readme.repoLink = `https://github.com/alvarosoaress/${repo.name
-            .replace(' ', '-')
-            .toLocaleLowerCase()}/`;
-
-          if (readme.available !== null) {
-            setProjects((prev) =>
-              [...prev, readme].sort(
-                (a, b) => Number(a.priority) - Number(b.priority),
-              ),
-            );
-            return readme;
-          }
-        }
+        return organizeReadme(readme, readmeData, repo.name);
       } catch (error) {
-        if (error instanceof Error) {
-          console.info(`${repo.name} does not have README.md`, error.message);
+        try {
+          if (error instanceof Error) {
+            console.info(
+              `${repo.name} does not have BR README.md`,
+              error.message,
+            );
+          }
+
+          const { data: readmeData } = await axios.get<string | null>(
+            readmeLinkUS,
+          );
+
+          return organizeReadme(readme, readmeData, repo.name);
+        } catch (error) {
+          if (error instanceof Error) {
+            console.info(
+              `${repo.name} does not have EN README.md`,
+              error.message,
+            );
+          }
+
+          return null;
         }
       }
     }
@@ -177,9 +208,7 @@ export default function Project() {
 
           localStorage.setItem('projects', JSON.stringify(filteredReadmes));
           setProjects(filteredReadmes);
-          filteredReadmes.length > 3
-            ? setManyProjects(3)
-            : setManyProjects(filteredReadmes.length);
+          setManyProjects(Math.min(filteredReadmes.length, 3));
         } catch (error) {
           if (error instanceof Error) {
             console.error('Error fetching data:', error.message);
@@ -191,9 +220,7 @@ export default function Project() {
           localStorage.getItem('projects') || '[]',
         );
         setProjects(localProjects);
-        localProjects.length > 3
-          ? setManyProjects(3)
-          : setManyProjects(localProjects.length);
+        setManyProjects(Math.min(localProjects.length, 3));
       }
     }
 
@@ -218,7 +245,8 @@ export default function Project() {
       {manyProjects ? (
         <div>
           <button
-            className={`p-4 text-2xl border-2  md:p-5 md:text-3xl rounded-xl text-primary border-primary hover:bg-primary hover:text-background hover:scale-10`}
+            className={`p-4 text-2xl border-2  md:p-5 md:text-3xl rounded-xl text-primary border-primary
+            hover:bg-primary hover:text-background hover:scale-10`}
             onClick={() =>
               manyProjects === 3
                 ? setManyProjects(projects.length)
