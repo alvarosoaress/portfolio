@@ -18,8 +18,10 @@ type TextTypes = {
   lessProjects: string;
 };
 
+type Lang = 'BR' | 'US';
+
 type LanguageContextTypes = {
-  lang: string;
+  lang: Lang;
   translated: TextTypes;
   toggleLang: () => void;
 };
@@ -161,7 +163,7 @@ export function LanguageProvider({
 }: {
   children: React.ReactElement;
 }) {
-  const [lang, setLang] = useState<string>(() => {
+  const [lang, setLang] = useState<Lang>(() => {
     const storedLang = localStorage.getItem('lang') || browserLang();
     return storedLang === 'BR' ? 'BR' : 'US';
   });

@@ -64,11 +64,16 @@ export type ReadmeType = {
   priority?: string;
 };
 
-export default function Project() {
-  const { translated } = useLanguage();
+type TranslatedReadmeType = {
+  BR: (ReadmeType | null | undefined)[];
+  US: (ReadmeType | null | undefined)[];
+};
 
-  const [projects, setProjects] = useState<ReadmeType[]>([]);
-  const [manyProjects, setManyProjects] = useState<number>(0);
+export default function Project() {
+  const { translated, lang } = useLanguage();
+
+  const [projects, setProjects] = useState<TranslatedReadmeType>();
+  const [projectsAmount, setProjectsAmount] = useState<number>(0);
 
   const githubApi = axios.create({
     baseURL: 'https://api.github.com/users/alvarosoaress',
@@ -102,6 +107,7 @@ export default function Project() {
       }
     }
 
+    // Transform the return of get readme
     function organizeReadme(
       readme: ReadmeType,
       readmeData: string | null,
@@ -111,6 +117,7 @@ export default function Project() {
 
       readme.available = readme.lines?.[readme.lines?.length - 1];
 
+      // If the readme is available
       if (readme.lines && readme.available === 'available') {
         readme.description = readme.lines?.[readme.lines?.length - 2];
 
@@ -129,18 +136,28 @@ export default function Project() {
           .toLocaleLowerCase()}/`;
 
         if (readme.available !== null) {
-          setProjects((prev) =>
-            [...prev, readme].sort(
-              (a, b) => Number(a.priority) - Number(b.priority),
-            ),
-          );
+          const projectsTemp: TranslatedReadmeType = {
+            BR: [],
+            US: [],
+          };
+
+          // Sort by priority
+          projectsTemp.BR = projects?.BR.sort(
+            (a, b) => Number(a!.priority) - Number(b!.priority),
+          ) as ReadmeType[];
+
+          projectsTemp.US = projects?.US.sort(
+            (a, b) => Number(a!.priority) - Number(b!.priority),
+          ) as ReadmeType[];
+
+          setProjects(projectsTemp);
 
           return readme;
         }
       }
     }
 
-    async function getRepoReadme(repo: RepositoryType) {
+    async function getRepoReadme(repo: RepositoryType, lang: 'BR' | 'US') {
       const readme: ReadmeType = {
         repoLink: '',
         name: '',
@@ -156,21 +173,22 @@ export default function Project() {
       const readmeLinkBR = `https://raw.githubusercontent.com/alvarosoaress/${repo.name}/${repo.default_branch}/README.md`;
       const readmeLinkUS = `https://raw.githubusercontent.com/alvarosoaress/${repo.name}/${repo.default_branch}/README-EN.md`;
 
-      try {
-        const { data: readmeData } = await axios.get<string | null>(
-          readmeLinkBR,
-        );
-
-        return organizeReadme(readme, readmeData, repo.name);
-      } catch (error) {
+      if (lang == 'BR') {
         try {
-          if (error instanceof Error) {
-            console.info(
-              `${repo.name} does not have BR README.md`,
-              error.message,
-            );
-          }
+          const { data: readmeData } = await axios.get<string | null>(
+            readmeLinkBR,
+          );
 
+          return organizeReadme(readme, readmeData, repo.name);
+        } catch (error) {
+          if (error instanceof Error) {
+            console.info(`${repo.name} does not have BR README.md`);
+
+            return null;
+          }
+        }
+      } else {
+        try {
           const { data: readmeData } = await axios.get<string | null>(
             readmeLinkUS,
           );
@@ -178,13 +196,10 @@ export default function Project() {
           return organizeReadme(readme, readmeData, repo.name);
         } catch (error) {
           if (error instanceof Error) {
-            console.info(
-              `${repo.name} does not have EN README.md`,
-              error.message,
-            );
-          }
+            console.info(`${repo.name} does not have US README.md`);
 
-          return null;
+            return null;
+          }
         }
       }
     }
@@ -197,68 +212,92 @@ export default function Project() {
           const { data: repos } =
             await githubApi.get<RepositoryType[]>('/repos');
 
-          const readmes = await Promise.all(
-            repos.map((repo) => getRepoReadme(repo)),
+          const readmes: TranslatedReadmeType = {
+            BR: [],
+            US: [],
+          };
+
+          readmes.BR = await Promise.all(
+            repos.map((repo) => getRepoReadme(repo, 'BR')),
           );
-          const filteredReadmes = readmes
-            .filter(Boolean)
-            .sort(
-              (a, b) => Number(a?.priority) - Number(b?.priority),
-            ) as ReadmeType[];
+
+          readmes.US = await Promise.all(
+            repos.map((repo) => getRepoReadme(repo, 'US')),
+          );
+
+          const filteredReadmes: TranslatedReadmeType = {
+            BR: [],
+            US: [],
+          };
+
+          // Another filter by priority to set local storage with priority
+          filteredReadmes.BR = readmes.BR.filter(Boolean).sort(
+            (a, b) => Number(a?.priority) - Number(b?.priority),
+          ) as ReadmeType[];
+
+          filteredReadmes.US = readmes.US.filter(Boolean).sort(
+            (a, b) => Number(a?.priority) - Number(b?.priority),
+          ) as ReadmeType[];
 
           localStorage.setItem('projects', JSON.stringify(filteredReadmes));
-          setProjects(filteredReadmes);
-          setManyProjects(Math.min(filteredReadmes.length, 3));
+
+          // Using spread to create a new reference and cause a re render
+          setProjects({ ...filteredReadmes });
+
+          setProjectsAmount(Math.min(filteredReadmes[lang].length, 3));
         } catch (error) {
           if (error instanceof Error) {
             console.error('Error fetching data:', error.message);
             throw error;
           }
         }
-      } else {
+      } else if (localStorage.getItem('projects')) {
         const localProjects = JSON.parse(
           localStorage.getItem('projects') || '[]',
         );
+
         setProjects(localProjects);
-        setManyProjects(Math.min(localProjects.length, 3));
+        setProjectsAmount(Math.min(localProjects[lang].length, 3));
       }
     }
 
     getReadmeInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [lang]);
 
-  return (
-    <Section sectionName={'projects'} className="!snap-none !snap-align-none">
-      <h1 className="mx-5 my-10 text-5xl text-center md:my-20 text-primary md:text-left md:text-5xl xxl:text-6xl">
-        {translated.projectTitle}
-      </h1>
+  if (projects && projects[lang]) {
+    return (
+      <Section sectionName={'projects'} className="!snap-none !snap-align-none">
+        <h1 className="mx-5 my-10 text-5xl text-center md:my-20 text-primary md:text-left md:text-5xl xxl:text-6xl">
+          {translated.projectTitle}
+        </h1>
 
-      {projects.slice(0, manyProjects).map((project, index) => (
-        <ProjectBlock
-          key={project.name}
-          projectInfo={project}
-          inverted={!!(index % 2)}
-        />
-      ))}
+        {projects[lang].slice(0, projectsAmount).map((project, index) => (
+          <ProjectBlock
+            key={project!.name}
+            projectInfo={project!}
+            inverted={!!(index % 2)}
+          />
+        ))}
 
-      {manyProjects ? (
-        <div>
-          <button
-            className={`p-4 text-2xl border-2  md:p-5 md:text-3xl rounded-xl text-primary border-primary
+        {projectsAmount >= 3 ? (
+          <div>
+            <button
+              className={`p-4 text-2xl border-2  md:p-5 md:text-3xl rounded-xl text-primary border-primary
             hover:bg-primary hover:text-background hover:scale-10`}
-            onClick={() =>
-              manyProjects === 3
-                ? setManyProjects(projects.length)
-                : setManyProjects(3)
-            }
-          >
-            {manyProjects === 3
-              ? translated.moreProjects
-              : translated.lessProjects}
-          </button>
-        </div>
-      ) : null}
-    </Section>
-  );
+              onClick={() =>
+                projectsAmount === 3
+                  ? setProjectsAmount(projects[lang].length)
+                  : setProjectsAmount(3)
+              }
+            >
+              {projectsAmount === 3
+                ? translated.moreProjects
+                : translated.lessProjects}
+            </button>
+          </div>
+        ) : null}
+      </Section>
+    );
+  }
 }
