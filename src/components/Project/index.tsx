@@ -82,19 +82,24 @@ export default function Project() {
   useEffect(() => {
     async function hasUpdate(): Promise<boolean | undefined> {
       try {
-        const { data } = await githubApi.get<GithubEventType[]>('/events');
+        // const { data } = await githubApi.get<GithubEventType[]>('/events');
 
-        const lastUpdate = localStorage.getItem('update');
-        const currentUpdate = data.find((value) => value.type === 'PushEvent')
-          ?.created_at;
+        const { data } = await githubApi.get<RepositoryType[]>('/repos');
 
-        if (!currentUpdate) {
-          console.error('GitHub response is missing "updated_at" field.');
-          return undefined;
-        }
+        // Find the latest pushed_at date among all repositories
+        const lastPushDate = data.reduce((latest, repo) => {
+          return new Date(repo.pushed_at) > new Date(latest)
+            ? repo.pushed_at
+            : latest;
+        }, '');
 
-        if (!lastUpdate || new Date(lastUpdate) < new Date(currentUpdate)) {
-          localStorage.setItem('update', currentUpdate);
+        const currentPushDate = localStorage.getItem('update');
+
+        if (
+          !currentPushDate ||
+          new Date(lastPushDate) > new Date(currentPushDate)
+        ) {
+          localStorage.setItem('update', lastPushDate);
           return true;
         }
 
