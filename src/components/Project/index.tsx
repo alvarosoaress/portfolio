@@ -4,17 +4,17 @@ import ProjectBlock from './ProjectBlock';
 import Section from '../Section';
 import { useLanguage } from '../Text/LanguageProvider';
 
-type GithubEventType = {
-  id: string;
-  type: string;
-  repo: {
-    id: number;
-    name: string;
-    url: string;
-  };
-  public: boolean;
-  created_at: string;
-};
+// type GithubEventType = {
+//   id: string;
+//   type: string;
+//   repo: {
+//     id: number;
+//     name: string;
+//     url: string;
+//   };
+//   public: boolean;
+//   created_at: string;
+// };
 
 type RepositoryType = {
   archived: boolean;
