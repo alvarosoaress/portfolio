@@ -4,18 +4,6 @@ import ProjectBlock from './ProjectBlock';
 import Section from '../Section';
 import { useLanguage } from '../Text/LanguageProvider';
 
-// type GithubEventType = {
-//   id: string;
-//   type: string;
-//   repo: {
-//     id: number;
-//     name: string;
-//     url: string;
-//   };
-//   public: boolean;
-//   created_at: string;
-// };
-
 type RepositoryType = {
   archived: boolean;
   assignees_url: string;
@@ -74,6 +62,7 @@ export default function Project() {
 
   const [projects, setProjects] = useState<TranslatedReadmeType>();
   const [projectsAmount, setProjectsAmount] = useState<number>(0);
+  const [projectsShown, setProjectsShown] = useState<number>(3);
 
   const githubApi = axios.create({
     baseURL: 'https://api.github.com/users/alvarosoaress',
@@ -82,18 +71,25 @@ export default function Project() {
   useEffect(() => {
     async function hasUpdate(): Promise<boolean | undefined> {
       try {
-        // const { data } = await githubApi.get<GithubEventType[]>('/events');
-
         const { data } = await githubApi.get<RepositoryType[]>('/repos');
 
         // Find the latest pushed_at date among all repositories
-        const lastPushDate = data.reduce((latest, repo) => {
-          return new Date(repo.pushed_at) > new Date(latest)
-            ? repo.pushed_at
-            : latest;
-        }, '');
+        // Using data[0].pushed_at as initial value
+        const lastPushDate =
+          data.length > 0
+            ? data.reduce((latest, repo) => {
+                return new Date(repo.pushed_at) > new Date(latest)
+                  ? repo.pushed_at
+                  : latest;
+              }, data[0].pushed_at)
+            : '';
 
         const currentPushDate = localStorage.getItem('update');
+
+        if (!lastPushDate) {
+          // No repositories found, so nothing to update
+          return false;
+        }
 
         if (
           !currentPushDate ||
@@ -244,12 +240,13 @@ export default function Project() {
             (a, b) => Number(a?.priority) - Number(b?.priority),
           ) as ReadmeType[];
 
+          // Storing projects to localStorage to prevent constant github api usage
           localStorage.setItem('projects', JSON.stringify(filteredReadmes));
 
           // Using spread to create a new reference and cause a re render
           setProjects({ ...filteredReadmes });
 
-          setProjectsAmount(Math.min(filteredReadmes[lang].length, 3));
+          setProjectsAmount(filteredReadmes[lang].length);
         } catch (error) {
           if (error instanceof Error) {
             console.error('Error fetching data:', error.message);
@@ -262,7 +259,7 @@ export default function Project() {
         );
 
         setProjects(localProjects);
-        setProjectsAmount(Math.min(localProjects[lang].length, 3));
+        setProjectsAmount(localProjects[lang].length);
       }
     }
 
@@ -277,7 +274,7 @@ export default function Project() {
           {translated.projectTitle}
         </h1>
 
-        {projects[lang].slice(0, projectsAmount).map((project, index) => (
+        {projects[lang].slice(0, projectsShown).map((project, index) => (
           <ProjectBlock
             key={project!.name}
             projectInfo={project!}
@@ -285,18 +282,18 @@ export default function Project() {
           />
         ))}
 
-        {projectsAmount >= 3 ? (
+        {projectsAmount > 3 ? (
           <div>
             <button
               className={`p-4 text-2xl border-2  md:p-5 md:text-3xl rounded-xl text-primary border-primary
             hover:bg-primary hover:text-background hover:scale-10`}
               onClick={() =>
-                projectsAmount === 3
-                  ? setProjectsAmount(projects[lang].length)
-                  : setProjectsAmount(3)
+                projectsShown === 3
+                  ? setProjectsShown(projects[lang].length)
+                  : setProjectsShown(3)
               }
             >
-              {projectsAmount === 3
+              {projectsShown === 3
                 ? translated.moreProjects
                 : translated.lessProjects}
             </button>
